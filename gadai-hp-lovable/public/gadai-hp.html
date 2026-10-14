@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gadai HP | Pandai Gadai</title>
+  <!--
+    /gadai-hp split page (Google Ads final URL).
+    Assigns each visitor to one of ACTIVE_VARIANTS (even split, sticky 30 days by cookie)
+    and forwards them to that variant, keeping every URL parameter (UTM, gclid, ?v=).
+    ?v=a or ?v=b forces a variant for QA.
+    ACTIVE_VARIANTS must match CONFIG.ACTIVE_VARIANTS in lp/assets/lp-shared.js.
+  -->
+  <script>
+    (function () {
+      var ACTIVE_VARIANTS = ['a', 'b'];
+      var PAGES = { a: '/lp/variant-a.html', b: '/lp/variant-b.html', c: '/lp/variant-c.html' };
+      var COOKIE = 'pg_lp_hp_variant';
+      var v = new URLSearchParams(location.search).get('v');
+      if (ACTIVE_VARIANTS.indexOf(v) === -1) {
+        var m = document.cookie.match('(?:^|; )' + COOKIE + '=([^;]*)');
+        v = m ? decodeURIComponent(m[1]) : null;
+        if (ACTIVE_VARIANTS.indexOf(v) === -1) {
+          v = ACTIVE_VARIANTS[Math.floor(Math.random() * ACTIVE_VARIANTS.length)];
+          document.cookie = COOKIE + '=' + v + ';path=/;max-age=' + 60 * 60 * 24 * 30 + ';SameSite=Lax';
+        }
+      }
+      location.replace(PAGES[v] + location.search + location.hash);
+    })();
+  </script>
+  <noscript><meta http-equiv="refresh" content="0;url=/lp/variant-a.html"/></noscript>
+  <style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif;color:#65758B;background:#F8FAFC}</style>
+</head>
+<body>
+  <p>Memuat halaman…</p>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id" data-lp-variant="b">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gadai HP, Lihat Prosesnya, Cek Taksiran Online | Pandai Gadai</title>
+  <meta name="description" content="Lihat sendiri proses gadai HP di Pandai Gadai. Cek taksiran online, dana cair di cabang terdekat, HP disegel dan bisa ditebus lagi."/>
+  <link rel="icon" href="images/panda.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="assets/lp-shared.css"/>
+  <!--
+    Variant B · "Cerita & Video" · served on /gadai-hp (33% split, see CONFIRM_LIST.md / README.md)
+    Brief: PGadai_Gadai_HP_LP_Experiment_Variants.md section 2. Copy is verbatim from the brief.
+    Placeholders (dashed boxes) mark assets not supplied yet. They hide automatically when
+    DRAFT_MODE is set to false in assets/lp-shared.js.
+  -->
+  <style>
+    /* Hero */
+    .hero{background:var(--background-neutral);padding:24px 0 32px;border-bottom:1px solid var(--border-subtle)}
+    .hero h1{font-size:24px;line-height:32px;font-weight:700}
+    .hero-sub{margin-top:8px}
+    .hero-grid{display:grid;grid-template-columns:144px 1fr;column-gap:16px;grid-template-areas:"h1 h1" "sub sub" "video side" "cta cta"}
+    .g-h1{grid-area:h1}.g-sub{grid-area:sub}.g-video{grid-area:video;margin-top:16px}.g-side{grid-area:side;margin-top:16px}.g-cta{grid-area:cta}
+    .hero-side{display:flex;flex-direction:column;gap:16px}
+    .hero-trust{display:flex;flex-direction:column;gap:8px}
+    .hero-cta{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+    .hv-media .ph .ph-title{font-size:12px;line-height:16px}
+
+    /* HeroVideo */
+    .hero-video{position:relative;width:100%;aspect-ratio:9/16;border-radius:var(--rounded-3xl);overflow:hidden;background:var(--background-dark)}
+    .hv-media{position:absolute;inset:0;cursor:pointer}
+    .hv-media video{width:100%;height:100%;object-fit:cover}
+    .hv-media .ph{height:100%;border-radius:var(--rounded-3xl);padding:8px}
+    .hv-media .ph-note{font-size:10px;line-height:12px}
+    .hv-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:var(--rounded-full);background:rgba(255,255,255,.9);display:none;align-items:center;justify-content:center;color:var(--background-primary);pointer-events:none}
+    .hero-video.tap-to-play .hv-play{display:flex}
+    .hv-sound{position:absolute;right:8px;bottom:8px;width:32px;height:32px;border-radius:var(--rounded-full);border:none;background:rgba(15,23,41,.6);color:var(--text-neutral);display:none;align-items:center;justify-content:center}
+    .hero-video.playing .hv-sound{display:flex}
+    .hv-sound .on{display:none}.hero-video.unmuted .hv-sound .on{display:block}.hero-video.unmuted .hv-sound .off{display:none}
+    .hv-endcard{position:absolute;left:8px;right:8px;bottom:48px;display:none}
+    .hero-video.show-endcard .hv-endcard{display:block}
+    .hv-endcard .btn{width:100%;height:38px;font-size:12px;padding:0 8px;white-space:normal;line-height:16px}
+    .hv-caption{margin-top:8px}
+
+    /* Switch strip (only with ?from=switch) */
+    .switch-strip{margin-top:24px;background:var(--background-info-subtle);border-radius:var(--rounded-2xl);padding:16px}
+    .switch-strip ul{list-style:none;display:grid;gap:8px;margin:8px 0 16px}
+
+    /* "Gadai, bukan jual" strip */
+    .strip{display:grid;gap:8px}
+    .strip .icon-row p{margin-top:4px}
+
+    /* VideoCardRow */
+    .video-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .video-card{display:block;text-align:left;background:var(--background-neutral);border:1px solid var(--border-subtle);border-radius:var(--rounded-2xl);overflow:hidden;padding:0;width:100%}
+    .video-card:hover{border-color:var(--border-info)}
+    .vc-thumb{position:relative;aspect-ratio:1/1;background-size:cover;background-position:center}
+    .vc-thumb .ph{position:absolute;inset:0;border-radius:0;border:none;padding:8px}
+    .vc-thumb.has-poster .ph{display:none}
+    .vc-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:var(--rounded-full);background:var(--background-primary);color:var(--text-neutral);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(2,61,255,.3)}
+    .vc-thumb .ph + .vc-play{top:auto;bottom:8px;left:auto;right:8px;transform:none;width:32px;height:32px}
+    .vc-body{padding:8px 16px 16px}
+    .vc-body p{margin-top:4px}
+    .lb-endcard{padding:16px;display:flex;justify-content:center}
+
+    /* Simulasi entry block */
+    .sim-block{border:2px solid var(--border-info)}
+    .sim-block .chips{margin:16px 0}
+
+    /* ReviewCards */
+    /* Testimonial carousel (same as Variant A) */
+    .testi-track{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 8px;scrollbar-width:none}
+    .testi-track::-webkit-scrollbar{display:none}
+    .testi{flex:0 0 280px;scroll-snap-align:start;background:var(--background-neutral);border:1px solid var(--border-subtle);border-radius:var(--rounded-2xl);padding:16px;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+    .stars{color:var(--decoration-warm);letter-spacing:2px;font-size:14px}
+    .testi-who{display:flex;gap:8px;align-items:center}
+    .testi-who img{width:40px;height:40px;border-radius:var(--rounded-full);object-fit:cover}
+
+    /* Branch block */
+    .branch .ph{min-height:144px;margin:16px 0}
+
+    @media (min-width:768px){
+      .hero{padding:48px 0}
+      .hero-grid{grid-template-columns:1fr 320px;column-gap:64px;grid-template-areas:"h1 video" "sub video" "side video" "cta video";grid-template-rows:auto auto auto 1fr;align-items:start}
+      .g-video{margin-top:0;align-self:center}
+      .hero h1{font-size:36px;line-height:48px}
+      .hv-media .ph .ph-title{font-size:14px;line-height:22px}
+      .hv-media .ph-note{font-size:12px;line-height:16px}
+      .hero-cta{flex-direction:row;margin-top:24px}
+      .hero-cta .btn{width:auto}
+      .hero-side{margin-top:24px}
+      .hero-trust{flex-direction:row;flex-wrap:wrap;gap:16px}
+      .strip{grid-template-columns:repeat(3,1fr)}
+      .video-row{grid-template-columns:1fr 1fr;gap:16px}
+      .vc-thumb{aspect-ratio:16/9}
+      .testi-track{display:grid;grid-template-columns:repeat(3,1fr);margin:0;padding:0;overflow:visible}
+      .two-col{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+      .two-col>.section{margin-top:0}
+      .hv-endcard .btn{height:44px;font-size:14px}
+    }
+  </style>
+</head>
+<body data-wa-text="Halo Pandai Gadai, saya sudah lihat videonya, mau cek taksiran HP saya.">
+
+<!-- 1. HEADER -->
+<header class="topbar">
+  <div class="container">
+    <a href="https://pandaigadai.com/" class="topbar-logo" aria-label="Pandai Gadai"><img src="images/panda.png" alt="Pandai Gadai"/></a>
+    <a class="contact-btn" data-cta="wa" data-placement="header" aria-label="Hubungi Kami via WhatsApp">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+      Hubungi Kami
+    </a>
+  </div>
+</header>
+
+<main>
+  <!-- 2. HERO · H1, subhead, hero video (V1), CTA under video, 3 trust chips -->
+  <section class="hero">
+    <!-- One grid: mobile = video beside trust chips (CTA stays above the fold); desktop = video in right column -->
+    <div class="container hero-grid">
+        <h1 class="g-h1">Gajian masih lama, kebutuhan nggak bisa nunggu?</h1>
+        <p class="body-1 text-subtle hero-sub g-sub">Gadai HP di Pandai Gadai. Dana cair hari ini, HP tetap milikmu dan bisa ditebus lagi saat siap.</p>
+
+            <div class="hero-video g-video" data-hero-video>
+              <div class="hv-media">
+                <div class="ph">
+                  <span class="ph-tag">Placeholder</span>
+                  <span class="ph-title">Video V1 · Hero UGC 9:16</span>
+                  <span class="ph-note">15 sampai 20 detik. Muted autoplay setelah halaman dimuat, caption tertanam.</span>
+                </div>
+              </div>
+              <span class="hv-play"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+              <button class="hv-sound" aria-label="Nyalakan suara"><svg class="off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6"/></svg><svg class="on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg></button>
+              <div class="hv-endcard"><a class="btn btn-primary" data-cta="simulasi" data-placement="hero_video_endcard">Cek Taksiran Sekarang</a></div>
+            </div>
+          <div class="hero-side g-side">
+            <p class="caption-1 text-subtle hv-caption">Lihat prosesnya, dari cek taksiran sampai dana cair.</p>
+            <div class="hero-trust">
+              <span class="trust-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Berizin dan diawasi OJK</span>
+              <span class="trust-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Cukup KTP, tanpa dus juga bisa</span>
+              <span class="trust-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Buka setiap hari sampai 21.00</span>
+            </div>
+          </div>
+
+        <div class="hero-cta g-cta" data-sticky-anchor>
+          <a class="btn btn-primary btn-xl btn-block" data-cta="simulasi" data-placement="hero">
+            Cek Taksiran Sekarang
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost btn-md btn-block" data-cta="wa" data-placement="hero">Tanya via WhatsApp</a>
+        </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- Switch strip · shown only when URL has ?from=switch (main brief 4.7) -->
+    <section class="switch-strip" id="switch-strip" hidden>
+      <h2 class="subtitle-1">Lagi membandingkan tempat gadai?</h2>
+      <ul class="body-2">
+        <li class="trust-chip">✓ Berizin dan diawasi OJK</li>
+        <li class="trust-chip">✓ Cek taksiran online sebelum datang</li>
+        <li class="trust-chip">✓ Tebus 7 hari tanpa bunga untuk nasabah baru</li>
+        <li class="trust-chip">✓ Buka setiap hari sampai 21.00</li>
+      </ul>
+      <a class="btn btn-primary btn-lg btn-block" data-cta="simulasi" data-placement="switch_strip">Cek Taksiran Sekarang</a>
+    </section>
+
+    <!-- 3. "GADAI, BUKAN JUAL" STRIP -->
+    <section class="section" aria-labelledby="strip-title">
+      <div class="section-head"><h2 class="title-1" id="strip-title">Gadai, bukan jual</h2></div>
+      <div class="strip">
+        <div class="card icon-row">
+          <span class="icon-box success"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></span>
+          <div><h3 class="subtitle-2">HP tetap milikmu</h3><p class="body-2 text-subtle">Tebus kapan pun kamu siap.</p></div>
+        </div>
+        <div class="card icon-row">
+          <span class="icon-box success"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></span>
+          <div><h3 class="subtitle-2">Dana cair hari ini</h3><p class="body-2 text-subtle">Proses di cabang cepat dan jelas.</p></div>
+        </div>
+        <div class="card icon-row">
+          <span class="icon-box success"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>
+          <div><h3 class="subtitle-2">Atur dari HP</h3><p class="body-2 text-subtle">Tebus, cicil, dan perpanjang lewat aplikasi 24 jam.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. VIDEO PROOF ROW (V2 process, V3 storage) · tap to play, inline lightbox -->
+    <section class="section" aria-labelledby="video-title" data-video-row>
+      <div class="section-head"><h2 class="title-1" id="video-title">Masih ragu? Lihat sendiri.</h2></div>
+      <div class="video-row">
+        <button class="video-card" data-video-card="V2">
+          <div class="vc-thumb">
+            <div class="ph"><span class="ph-tag">Placeholder</span><span class="ph-note">Poster Video V2 · Proses, 30 detik, 16:9 atau 1:1</span></div>
+            <span class="vc-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+          </div>
+          <div class="vc-body"><h3 class="subtitle-2 vc-title">Proses gadai HP, dari datang sampai cair</h3><p class="caption-1 text-subtle">Durasi 30 detik</p></div>
+        </button>
+        <button class="video-card" data-video-card="V3">
+          <div class="vc-thumb">
+            <div class="ph"><span class="ph-tag">Placeholder</span><span class="ph-note">Poster Video V3 · Penyimpanan, 20 detik, 16:9 atau 1:1</span></div>
+            <span class="vc-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+          </div>
+          <div class="vc-body"><h3 class="subtitle-2 vc-title">Ke mana HP kamu disimpan?</h3><p class="caption-1 text-subtle">Disegel, CCTV 24 jam, diasuransikan</p></div>
+        </button>
+      </div>
+    </section>
+
+    <!-- 5. SIMULASI ENTRY BLOCK -->
+    <section class="section" aria-labelledby="sim-title">
+      <div class="card card-hero sim-block">
+        <h2 class="title-1" id="sim-title">Sekarang giliran HP kamu. Dapat berapa?</h2>
+        <p class="body-2 text-subtle" style="margin-top:8px">Pilih merek, tipe, dan kondisi. Perkiraan dana langsung muncul.</p>
+        <div class="chips">
+          <a class="chip" data-cta="simulasi" data-brand="samsung" data-placement="sim_block_brand">Samsung</a>
+          <a class="chip" data-cta="simulasi" data-brand="iphone" data-placement="sim_block_brand">iPhone</a>
+          <a class="chip" data-cta="simulasi" data-brand="oppo" data-placement="sim_block_brand">Oppo</a>
+          <a class="chip" data-cta="simulasi" data-brand="vivo" data-placement="sim_block_brand">Vivo</a>
+          <a class="chip" data-cta="simulasi" data-brand="xiaomi" data-placement="sim_block_brand">Xiaomi</a>
+          <a class="chip" data-cta="simulasi" data-brand="infinix" data-placement="sim_block_brand">Infinix</a>
+          <a class="chip" data-cta="simulasi" data-placement="sim_block_brand">Merek lain</a>
+        </div>
+        <a class="btn btn-primary btn-xl btn-block" data-cta="simulasi" data-placement="sim_block">Lihat Perkiraan Dana</a>
+      </div>
+    </section>
+
+    <!-- 6. NASABAH STORIES · same carousel as Variant A.
+         Quotes are verbatim from the testimonials on the current pandaigadai.com landing page.
+         Only these 3 site reviews are hyphen free. Eva ("10-15"), Syauqi ("cari-cari") and Irvan ("bertele-tele")
+         are left out because review text must not be edited and visible copy must not contain "-". -->
+    <section class="section" aria-labelledby="stories-title">
+      <div class="section-head">
+        <h2 class="title-1" id="stories-title">Kata nasabah Pandai Gadai</h2>
+        <p class="caption-1 text-subtle">Ulasan dari nasabah Pandai Gadai.</p>
+      </div>
+      <div class="testi-track">
+        <figure class="testi">
+          <div class="stack-8"><div class="stars" aria-label="5 bintang">★★★★★</div>
+          <blockquote class="body-2">“Tau Pandai Gadai karena direkomendasiin temen. Prosesnya cepat, simpel, dan pelayanannya ramah walaupun sudah malam. Saya cuma butuh 800 ribu, eh ternyata dapatnya 2,3 juta.”</blockquote></div>
+          <figcaption class="testi-who"><img src="images/reviewer2.png" alt=""/><div><div class="subtitle-2">Evan</div><div class="caption-1 text-subtle">Pelajar · Jakarta Pusat</div></div></figcaption>
+        </figure>
+        <figure class="testi">
+          <div class="stack-8"><div class="stars" aria-label="5 bintang">★★★★★</div>
+          <blockquote class="body-2">“Prosesnya cepat dan banyak promo. Saya dapat promo bunga 0%. Pelayanannya juga bagus, engga ribet dan petugasnya ramah. Nilai taksirannya besar, recommended 👍”</blockquote></div>
+          <figcaption class="testi-who"><img src="images/reviewer1.png" alt=""/><div><div class="subtitle-2">Julio</div><div class="caption-1 text-subtle">Karyawan · Jakarta Barat</div></div></figcaption>
+        </figure>
+        <figure class="testi">
+          <div class="stack-8"><div class="stars" aria-label="5 bintang">★★★★★</div>
+          <blockquote class="body-2">“Nilai taksiran lebih besar dibanding yang lain. Pegawainya ramah dan menjelaskan secara detail. Barang aman dan dijaga dengan baik. Pembayaran bisa dengan metode tunai/transfer.”</blockquote></div>
+          <figcaption class="testi-who"><img src="images/reviewer3.png" alt=""/><div><div class="subtitle-2">Adit</div><div class="caption-1 text-subtle">Pekerja Harian · Jakarta Utara</div></div></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="two-col">
+      <!-- 7. HOW IT WORKS (shared) -->
+      <section class="section" aria-labelledby="how-title">
+        <div class="section-head"><h2 class="title-1" id="how-title">Cuma 3 langkah</h2></div>
+        <ol class="card steps">
+          <li class="step"><span class="step-num">1</span><div class="step-body"><h3 class="subtitle-2">Simulasi online</h3><p class="body-2 text-subtle">Pilih barang dan kondisinya, lihat perkiraan dana dalam hitungan detik.</p></div></li>
+          <li class="step"><span class="step-num">2</span><div class="step-body"><h3 class="subtitle-2">Datang ke cabang</h3><p class="body-2 text-subtle">Bawa barang dan KTP ke cabang terdekat. Booking online cuma butuh kurang dari 1 menit.</p></div></li>
+          <li class="step"><span class="step-num">3</span><div class="step-body"><h3 class="subtitle-2">Dana cair</h3><p class="body-2 text-subtle">Barang dicek, dana cair tunai atau transfer bank. Tebus kapan pun kamu siap.</p></div></li>
+        </ol>
+      </section>
+
+      <!-- 8. BRANCH BLOCK (shared) -->
+      <section class="section branch" aria-labelledby="branch-title" id="cabang">
+        <div class="section-head">
+          <h2 class="title-1" id="branch-title">Cabang Pandai Gadai terdekat</h2>
+          <p class="body-2 text-subtle">Tersebar di Jabodetabek dan Karawang. Cabang modern, ber AC, dan nyaman. Cek rute dan jam buka di Google Maps sebelum datang.</p>
+        </div>
+        <div class="ph">
+          <span class="ph-tag">Placeholder</span>
+          <span class="ph-title">Daftar cabang atau peta</span>
+          <span class="ph-note">Dari daftar cabang resmi. Tampilkan Bandung atau Cimahi hanya jika sudah dikonfirmasi.</span>
+        </div>
+        <a class="btn btn-secondary btn-lg btn-block" data-cta="branch" data-placement="branch_block">Cari Cabang Terdekat</a>
+      </section>
+    </div>
+
+    <!-- 9. FAQ (5 questions) -->
+    <section class="section" aria-labelledby="faq-title">
+      <div class="section-head"><h2 class="title-1" id="faq-title">Pertanyaan yang sering ditanyakan</h2></div>
+      <div class="faq">
+        <details open><summary>Gadai HP dapat berapa?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary><p class="faq-a body-2">Tergantung merek, tipe, dan kondisi HP. Cek lewat simulasi, perkiraan dana langsung muncul. Nilai akhir ditentukan setelah HP dicek di cabang.</p></details>
+        <details><summary>Syaratnya apa saja?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary><p class="faq-a body-2">Cukup KTP asli dan HP yang mau digadai. Dus dan nota tidak wajib.</p></details>
+        <details><summary>Apakah HP saya aman?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary><p class="faq-a body-2">HP disegel, tidak dipakai, disimpan di suhu terjaga, dipantau CCTV 24 jam, dan diasuransikan.</p></details>
+        <details><summary>Apa itu tebus 7 hari tanpa bunga?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary><p class="faq-a body-2">Untuk nasabah baru produk elektronik, kalau kamu tebus dalam 7 hari kamu tidak dikenakan bunga. Syarat berlaku.</p></details>
+        <details><summary>Jam berapa cabang buka?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary><p class="faq-a body-2">Setiap hari sampai 21.00, termasuk hari libur. Penebusan dilayani sampai 20.45.</p></details>
+      </div>
+    </section>
+
+    <!-- 10. FINAL CTA BAND -->
+    <section class="section">
+      <div class="final-cta">
+        <img src="images/simulasi-mascot.png" alt=""/>
+        <h2 class="title-1">Pilihan Pandai, Masalah Selesai.</h2>
+        <p class="body-2 text-subtle">Cek perkiraan dana dari HP kamu, gratis dan tanpa komitmen.</p>
+        <a class="btn btn-primary btn-xl" data-cta="simulasi" data-placement="final_cta">
+          Cek Taksiran Sekarang
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- 11. FOOTNOTE -->
+    <p class="footnote caption-1 text-subtle">Tebus 7 hari tanpa bunga berlaku untuk nasabah baru produk elektronik yang memenuhi syarat. Bonus pinjaman Rp100.000 berlaku untuk booking online yang memenuhi syarat. Hasil simulasi adalah perkiraan, nilai akhir ditentukan setelah pengecekan barang di cabang. PT Solusi Gadai Pintar berizin dan diawasi oleh Otoritas Jasa Keuangan (OJK).</p>
+  </div>
+</main>
+
+<!-- 11. OJK FOOTER -->
+<!-- Same footer as Variant A. Two strings differ for the brief's copy rules (no "-", no "pegadaian"): see CONFIRM_LIST.md #18. -->
+<footer class="footer">
+  <div class="container">
+    <img class="footer-logo" src="images/panda.png" alt="Pandai Gadai"/>
+    <div class="footer-grid">
+      <div>
+        <p class="body-2 text-subtle">Tempat gadai swasta terpercaya, aman, &amp; nyaman. Yang ada Pandanya!</p>
+        <div class="ojk"><img src="images/ojk-badge.png" alt="OJK"/><span class="caption-1 text-subtle">Berizin &amp; diawasi oleh OJK</span></div>
+      </div>
+      <div>
+        <h4>Gadai Elektronik</h4>
+        <ul>
+          <li><a href="https://pandaigadai.com/produk-kami/gadai-hp-laptop">HP &amp; Laptop</a></li>
+          <li><a href="https://pandaigadai.com/produk-kami/gadai-kamera">Kamera</a></li>
+          <li><a href="https://pandaigadai.com/produk-kami/gadai-smartwatch">Smartwatch</a></li>
+          <li><a href="https://pandaigadai.com/produk-kami/gadai-playstation">Game Console</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Perusahaan</h4>
+        <ul>
+          <li><a href="https://pandaigadai.com/tentang-kami">Tentang Kami</a></li>
+          <li><a href="https://pandaigadai.com/outlet">Cabang Kami</a></li>
+          <li><a href="https://pandaigadai.com/poin-pandai">Poin Pandai</a></li>
+          <li><a href="https://pandaigadai.com/kontak-kami">Kontak Kami</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Layanan Pengaduan</h4>
+        <ul>
+          <li>Telepon: 0857 1532 2146</li>
+          <li>Email: hello@pandaigadai.com</li>
+        </ul>
+        <h4 style="margin-top:16px">Download Aplikasi</h4>
+        <div class="app-badges">
+          <a data-cta="app" aria-label="Download di App Store"><img src="images/ios-badge.png" alt="App Store"/></a>
+          <a data-cta="app" aria-label="Download di Google Play"><img src="images/playstore-badge.webp" alt="Google Play"/></a>
+        </div>
+      </div>
+    </div>
+    <p class="caption-1 text-subtle copyright">© 2026 PT Solusi Gadai Pintar. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- 12. STICKY MOBILE CTA -->
+<div class="sticky-cta" id="sticky-cta" aria-hidden="true">
+  <div class="inner">
+    <div class="meta"><div class="subtitle-2">Gadai HP di Pandai Gadai</div><div class="caption-1 text-subtle">Cek perkiraan dana, gratis</div></div>
+    <a class="btn btn-primary btn-lg" data-cta="simulasi" data-placement="sticky" tabindex="-1">Cek Taksiran</a>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Gadai HP dapat berapa?","acceptedAnswer":{"@type":"Answer","text":"Tergantung merek, tipe, dan kondisi HP. Cek lewat simulasi, perkiraan dana langsung muncul. Nilai akhir ditentukan setelah HP dicek di cabang."}},
+{"@type":"Question","name":"Syaratnya apa saja?","acceptedAnswer":{"@type":"Answer","text":"Cukup KTP asli dan HP yang mau digadai. Dus dan nota tidak wajib."}},
+{"@type":"Question","name":"Apakah HP saya aman?","acceptedAnswer":{"@type":"Answer","text":"HP disegel, tidak dipakai, disimpan di suhu terjaga, dipantau CCTV 24 jam, dan diasuransikan."}},
+{"@type":"Question","name":"Apa itu tebus 7 hari tanpa bunga?","acceptedAnswer":{"@type":"Answer","text":"Untuk nasabah baru produk elektronik, kalau kamu tebus dalam 7 hari kamu tidak dikenakan bunga. Syarat berlaku."}},
+{"@type":"Question","name":"Jam berapa cabang buka?","acceptedAnswer":{"@type":"Answer","text":"Setiap hari sampai 21.00, termasuk hari libur. Penebusan dilayani sampai 20.45."}}
+]}
+</script>
+<script src="assets/lp-shared.js"></script>
+<script>
+  // Switch strip only for competitor traffic routed here (?from=switch)
+  if (new URLSearchParams(location.search).get('from') === 'switch') document.getElementById('switch-strip').hidden = false;
+</script>
+</body>
+</html>

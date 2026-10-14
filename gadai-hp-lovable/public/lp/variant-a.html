@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id" data-lp-variant="a">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gadai HP Bunga 0%, Cair &lt; 30 Menit | Pandai Gadai</title>
+  <meta name="description" content="Gadai HP di Pandai Gadai: bunga 0%, extra pinjaman Rp100rb, cukup bawa HP &amp; KTP, tanpa BI Checking. Cek simulasi taksiran HP kamu sekarang."/>
+  <link rel="icon" href="images/panda.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+  <!--
+    DRAFT — Landing Page Gadai HP (Pandai Gadai)
+    Design system : Cortes DS (design-tokens.md, component-specs.md, layout-guidelines.md)
+    Primary CTA   : "Simulasi Gadai" → simulasi-gadai.html  (set SIMULASI_URL in assets/lp-shared.js)
+    Notes for the upload team are marked with "TODO:" comments
+  -->
+
+  <style>
+    /* ───────── Cortes DS semantic tokens ───────── */
+    :root{
+      /* background */
+      --background-primary:#023DFF;
+      --background-primary-darker:#001CDB;
+      --background-secondary:#FFCD05;
+      --background-neutral:#FFFFFF;
+      --background-subtle:#F8FAFC;
+      --background-disabled:#E1E7EF;
+      --background-dark:#0F1729;
+      --background-success-subtle:#F0FDF4;
+      --background-warning-subtle:#FEFDEA;
+      --background-error:#DC2626;
+      --background-info-subtle:#E5F2FF;
+      /* text */
+      --text-default:#0F1729;
+      --text-subtle:#65758B;
+      --text-disabled:#94A3B8;
+      --text-neutral:#FFFFFF;
+      --text-link:#023DFF;
+      --text-info:#001CDB;
+      --text-success:#15803D;
+      /* border */
+      --border-default:#CBD5E1;
+      --border-subtle:#E1E7EF;
+      --border-info:#023DFF;
+      /* icon */
+      --icon-default:#0F1729;
+      --icon-subtle:#65758B;
+      --icon-info:#0020E3;
+      --icon-success:#16A34A;
+      /* decoration */
+      --decoration-warm-light:#FFF88F;
+      --decoration-warm:#FFCD05;
+      --overlay-default:rgba(15,17,41,.7);
+      /* radius */
+      --rounded-lg:8px;
+      --rounded-2xl:12px;
+      --rounded-3xl:16px;
+      --rounded-full:9999px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Geist',system-ui,sans-serif;background:var(--background-subtle);color:var(--text-default);-webkit-font-smoothing:antialiased}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    button{font-family:inherit}
+
+    /* ───────── Typography (Cortes text styles) ───────── */
+    .heading-1{font-size:48px;line-height:60px;font-weight:700;letter-spacing:-.012em}
+    .heading-2{font-size:36px;line-height:48px;font-weight:700}
+    .heading-3{font-size:28px;line-height:36px;font-weight:700;letter-spacing:-.006em}
+    .title-1{font-size:20px;line-height:32px;font-weight:700}
+    .title-2{font-size:18px;line-height:28px;font-weight:600}
+    .subtitle-1{font-size:16px;line-height:24px;font-weight:600}
+    .subtitle-2{font-size:14px;line-height:22px;font-weight:600}
+    .body-1{font-size:16px;line-height:24px;font-weight:400}
+    .body-2{font-size:14px;line-height:20px;font-weight:400}
+    .caption-1{font-size:12px;line-height:16px;font-weight:400}
+    .label-1{font-size:12px;line-height:16px;font-weight:700}
+    .text-subtle{color:var(--text-subtle)}
+
+    /* ───────── Layout constants ───────── */
+    .container{width:100%;max-width:375px;margin:0 auto;padding:0 16px}  /* 343px content */
+    .section{margin-top:48px}
+    .section-head{margin-bottom:16px}
+    .section-head p{margin-top:8px}
+    .stack-8>*+*{margin-top:8px}
+    .stack-16>*+*{margin-top:16px}
+
+    /* ───────── DS: Button ───────── */
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--rounded-lg);font-size:14px;line-height:22px;font-weight:600;cursor:pointer;transition:background .15s,color .15s,border-color .15s;white-space:nowrap}
+    .btn-lg{height:44px;padding:0 16px}
+    .btn-md{height:38px;padding:0 16px}
+    .btn-sm{height:30px;padding:0 8px}
+    .btn-block{width:100%}
+    /* CTA emphasis: one step above DS Large (44px) — used only for the primary "Simulasi Gadai" CTA */
+    .btn-xl{height:52px;padding:0 24px;font-size:16px;line-height:24px;font-weight:700;box-shadow:0 4px 12px rgba(2,61,255,.24)}
+    .btn-primary{background:var(--background-primary);color:var(--text-neutral)}
+    .btn-primary:hover{background:var(--background-primary-darker)}
+    .btn-secondary{background:var(--background-neutral);color:var(--text-default);border:1px solid var(--border-default)}
+    .btn-secondary:hover{background:var(--background-info-subtle);color:var(--text-link);border-color:var(--border-info)}
+    .btn-ghost{background:transparent;color:var(--text-link)}
+    .btn-ghost:hover{background:var(--background-info-subtle)}
+    .btn:focus-visible{outline:2px solid var(--border-info);outline-offset:2px}
+
+    /* ───────── DS: Badge Product ───────── */
+    .badge{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:var(--rounded-full);font-size:12px;font-weight:700;line-height:1}
+    .badge-light{background:var(--background-info-subtle);color:var(--text-info);border:1px solid var(--border-info)}
+    .badge-heavy{background:var(--background-primary);color:var(--text-neutral)}
+    .badge-warm{background:var(--decoration-warm);color:var(--text-default)}
+
+    /* ───────── DS: Chips ───────── */
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{display:inline-flex;align-items:center;height:32px;padding:0 16px;border-radius:var(--rounded-full);background:var(--background-neutral);border:1px solid var(--border-subtle);font-size:14px;font-weight:600;color:var(--text-default)}
+
+    /* ───────── Top navbar ───────── */
+    .topbar{position:sticky;top:0;z-index:50;background:var(--background-neutral);border-bottom:1px solid var(--border-subtle)}
+    .topbar .container{height:56px;display:flex;align-items:center;justify-content:space-between}
+    .topbar-logo img{height:32px;width:auto}
+    .contact-btn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:var(--rounded-full);border:1px solid var(--border-default);color:var(--text-default);font-size:14px;line-height:22px;font-weight:600}
+    .contact-btn svg{color:var(--icon-default)}
+    .contact-btn:hover{background:var(--background-info-subtle);border-color:var(--border-info);color:var(--text-link)}
+    .contact-btn:hover svg{color:var(--icon-info)}
+
+    /* ───────── Hero ───────── */
+    .hero{background:var(--background-primary);color:var(--text-neutral);padding:24px 0 96px;position:relative;overflow:hidden}
+    .hero::after{content:"";position:absolute;right:-96px;top:-64px;width:256px;height:256px;border-radius:50%;background:var(--background-primary-darker);opacity:.6}
+    .hero .container{position:relative;z-index:1}
+    .hero-eyebrow{display:flex;gap:8px;flex-wrap:wrap}
+    .hero-title{margin-top:16px}
+    .hero-value{margin-top:16px;display:flex;flex-direction:column;max-width:144px}
+    .hero-value .heading-1{color:var(--decoration-warm);white-space:nowrap;font-size:64px;line-height:72px}
+    .hero-value-label{color:var(--decoration-warm)}
+    .hero-value-cap{opacity:.9}
+    .hero-img{position:absolute;right:-24px;bottom:-32px;width:216px}
+    .hero-grid{position:relative}
+
+    /* Hero card (overlaps hero) */
+    .hero-card{margin-top:-80px;position:relative;z-index:2;background:var(--background-neutral);border-radius:var(--rounded-3xl);padding:24px 16px 16px;box-shadow:0 8px 24px rgba(15,23,41,.08);text-align:center}
+    .hero-card-top{display:flex;flex-direction:column;gap:8px;align-items:center}
+    .hero-card-top img{width:72px;height:72px;border-radius:var(--rounded-2xl);flex-shrink:0}
+    .hero-card-top .title-2{margin-top:8px}
+    .cta-col{display:flex;flex-direction:column;align-items:center}
+    .hero-card .btn-primary{margin-top:24px}
+    .hero-card .btn-ghost{margin-top:8px}
+    .trust-row{display:flex;justify-content:space-between;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-subtle)}
+    .trust-item{flex:1;text-align:center}
+    .trust-item .subtitle-2{color:var(--text-default)}
+
+    /* ───────── Promo cards ───────── */
+    .promo-list{display:grid;gap:8px}
+    .promo{background:var(--background-neutral);border:1px solid var(--border-subtle);border-radius:var(--rounded-2xl);padding:16px;display:flex;gap:16px;align-items:center}
+    .promo-val{flex-shrink:0;width:80px;height:80px;border-radius:var(--rounded-2xl);background:var(--background-info-subtle);color:var(--text-info);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+    .promo-val.warm{background:var(--background-warning-subtle);color:var(--text-default)}
+    .promo-val .heading-3{line-height:32px}
+
+    /* ───────── Steps ───────── */
+    .steps{background:var(--background-neutral);border-radius:var(--rounded-2xl);padding:16px;border:1px solid var(--border-subtle)}
+    .step{display:flex;gap:16px;position:relative;padding-bottom:24px}
+    .step:last-child{padding-bottom:0}
+    .step:not(:last-child)::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:var(--border-subtle)}
+    .step-num{flex-shrink:0;width:32px;height:32px;border-radius:var(--rounded-full);background:var(--background-info-subtle);color:var(--text-info);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+    .step:first-child .step-num{background:var(--background-primary);color:var(--text-neutral)}
+    .step-body{padding-top:4px}
+    .step-body p{margin-top:4px}
+
+    /* ───────── Requirements ───────── */
+    .req{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .req-item{background:var(--background-neutral);border:1px solid var(--border-subtle);border-radius:var(--rounded-2xl);padding:16px}
+    .req-icon{width:40px;height:40px;border-radius:var(--rounded-lg);background:var(--background-success-subtle);color:var(--icon-success);display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+
+    /* ───────── Keunggulan ───────── */
+    .why{display:grid;gap:8px}
+    .why-item{display:flex;gap:16px;align-items:center;background:var(--background-neutral);border:1px solid var(--border-subtle);border-radius:var(--rounded-2xl);padding:16px}
+    .why-item img{width:56px;height:56px;object-fit:contain;flex-shrink:0}
+    .why-item p{margin-top:4px}
+
+    /* ───────── Testimonials ───────── */
+    .testi-track{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:0 16px 8px;scrollbar-width:none}
+    .testi-track::-webkit-scrollbar{display:none}
+    .testi{flex:0 0 280px;scroll-snap-align:start;background:var(--background-neutral);border:1px solid var(--border-subtle);border-radius:var(--rounded-2xl);padding:16px;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+    .stars{color:var(--decoration-warm);letter-spacing:2px;font-size:14px}
+    .testi-who{display:flex;gap:8px;align-items:center}
+    .testi-who img{width:40px;height:40px;border-radius:var(--rounded-full);object-fit:cover}
+
+    /* ───────── DS: Accordion (FAQ) ───────── */
+    .faq{background:var(--background-neutral);border:1px solid var(--border-subtle);border-radius:var(--rounded-2xl);overflow:hidden}
+    .faq details{border-bottom:1px solid var(--border-subtle)}
+    .faq details:last-child{border-bottom:none}
+    .faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px;font-size:14px;line-height:22px;font-weight:600;color:var(--text-default)}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary svg{flex-shrink:0;color:var(--icon-default);transition:transform .2s}
+    .faq details[open] summary svg{transform:rotate(180deg)}
+    .faq .faq-a{padding:0 16px 16px;color:var(--text-subtle)}
+
+    /* ───────── Closing CTA ───────── */
+    .closing{background:var(--background-info-subtle);border-radius:var(--rounded-3xl);padding:32px 16px;display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center}
+    .closing img{width:96px;height:96px;border-radius:var(--rounded-2xl);flex-shrink:0}
+    .closing>div{display:flex;flex-direction:column;align-items:center;width:100%}
+    .closing .btn{margin-top:24px;width:100%}
+
+    /* ───────── Footer ───────── */
+    .footer{margin-top:48px;background:var(--background-neutral);border-top:1px solid var(--border-subtle);padding:32px 0 120px}
+    .footer-logo{height:40px;width:auto}
+    .footer-grid{display:grid;gap:24px;margin-top:24px}
+    .footer h4{font-size:14px;line-height:22px;font-weight:600;margin-bottom:8px}
+    .footer li{list-style:none;color:var(--text-subtle);font-size:14px;line-height:20px}
+    .footer li+li{margin-top:8px}
+    .footer li a:hover{color:var(--text-link)}
+    .ojk{display:flex;gap:8px;align-items:center;margin-top:16px}
+    .ojk img{height:24px;width:auto}
+    .app-badges{display:flex;gap:8px}
+    .app-badges img{height:40px;width:auto}
+    .copyright{margin-top:24px;padding-top:16px;border-top:1px solid var(--border-subtle);text-align:center}
+
+    /* ───────── Sticky CTA (mobile) ───────── */
+    .sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--background-neutral);border-top:1px solid var(--border-subtle);padding:16px 16px 34px;transform:translateY(100%);transition:transform .25s ease}
+    .sticky-cta.show{transform:translateY(0)}
+    .sticky-cta .inner{max-width:343px;margin:0 auto;display:flex;align-items:center;gap:16px}
+    .sticky-cta .meta{flex:1;min-width:0}
+    .sticky-cta .btn{flex-shrink:0}
+
+    /* ───────── Desktop enhancement ───────── */
+    @media (min-width:768px){
+      .container{max-width:1056px;padding:0 32px}
+      .hero{padding:48px 0 128px}
+      .hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+      .hero-img{position:static;width:100%;max-width:400px;margin:0 auto}
+      .hero-value{max-width:none}
+      .hero-value .heading-1{font-size:96px;line-height:96px}
+      .hero-title.title-1{font-size:36px;line-height:48px}
+      .hero-value .heading-1{font-size:64px;line-height:72px}
+      .hero-card{margin-top:-96px;padding:32px 24px 24px}
+      .hero-card-top p{max-width:480px}
+      .hero-card .cta-col .btn{width:360px}
+      .trust-row{max-width:560px;margin:24px auto 0}
+      .promo-list{grid-template-columns:repeat(3,1fr)}
+      .promo{flex-direction:column;align-items:flex-start}
+      .two-col{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+      .two-col>.section{margin-top:0}
+      .why{grid-template-columns:1fr 1fr}
+      .testi-track{margin:0;padding:0 0 8px}
+      .testi{flex:0 0 320px}
+      .closing{padding:48px 32px}
+      .closing img{width:128px;height:128px}
+      .closing .btn{width:360px}
+      .footer{padding-bottom:48px}
+      .footer-grid{grid-template-columns:2fr 1fr 1fr 1.4fr}
+      .sticky-cta{display:none}
+    }
+  </style>
+</head>
+<body data-wa-text="Halo Pandai Gadai, saya mau cek taksiran HP saya.">
+
+<!-- ───────── TOP NAVBAR ───────── -->
+<header class="topbar">
+  <div class="container">
+    <a href="https://pandaigadai.com/" class="topbar-logo" aria-label="Pandai Gadai — Beranda">
+      <img src="images/panda.png" alt="Pandai Gadai"/>
+    </a>
+    <!-- Support entry point (headset, top-right) -->
+    <a href="https://wa.me/6285715322146" data-cta="wa" data-placement="header" class="contact-btn" aria-label="Hubungi Kami via WhatsApp" target="_blank" rel="noopener">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+      Hubungi Kami
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ───────── HERO (background/primary = the one signal on this page) ───────── -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-eyebrow">
+          <span class="badge badge-warm">Gadai HP</span>
+          <span class="badge badge-heavy" style="background:var(--background-primary-darker)">Berizin &amp; diawasi OJK</span>
+        </div>
+        <h1 class="title-1 hero-title">Gadai HP di Pandai Gadai, duit cair kurang dari 30 menit</h1>
+        <div class="hero-value">
+          <span class="subtitle-1 hero-value-label">Bunga</span>
+          <span class="heading-1">0%</span>
+          <span class="caption-1 hero-value-cap">Tebus dalam 7 hari,<br/>maks. gadai Rp2,5 jt*</span>
+        </div>
+      </div>
+      <img class="hero-img" src="images/gadai-hp-laptop.png" alt="HP, tablet, dan laptop yang bisa digadai di Pandai Gadai"/>
+    </div>
+  </section>
+
+  <!-- ───────── HERO CARD — PRIMARY CTA ───────── -->
+  <div class="container">
+    <div class="hero-card" id="hero-cta">
+      <div>
+        <div class="hero-card-top">
+          <img src="images/simulasi-mascot.png" alt=""/>
+          <h2 class="title-2">Berapa taksiran HP kamu?</h2>
+          <p class="body-2 text-subtle">Cek estimasi pinjaman secara online, kurang dari 1 menit. Gratis, tanpa komitmen.</p>
+        </div>
+      </div>
+      <div class="cta-col">
+        <a href="simulasi-gadai.html" class="btn btn-primary btn-xl btn-block" data-cta="simulasi" data-placement="hero" id="button-hero-simulasi">
+          Cek Taksiran
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#cara-gadai" class="btn btn-ghost btn-md btn-block">Lihat cara gadai HP</a>
+      </div>
+      <div class="trust-row">
+        <div class="trust-item"><div class="subtitle-2">&lt; 30 menit</div><div class="caption-1 text-subtle">Dana cair</div></div>
+        <div class="trust-item"><div class="subtitle-2">HP + KTP</div><div class="caption-1 text-subtle">Syarat cukup</div></div>
+        <div class="trust-item"><div class="subtitle-2">s/d 21.00</div><div class="caption-1 text-subtle">Buka tiap hari</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ───────── PROMO ───────── -->
+    <section class="section" aria-labelledby="promo-title">
+      <div class="section-head">
+        <span class="badge badge-light">Promo Gadai HP</span>
+        <h2 class="title-1" id="promo-title" style="margin-top:8px">Pilih promo yang paling pas</h2>
+      </div>
+      <div class="promo-list">
+        <div class="promo">
+          <div class="promo-val warm"><span class="heading-3">0%</span><span class="label-1">bunga</span></div>
+          <div class="stack-8">
+            <h3 class="subtitle-1">Bunga 0%</h3>
+            <p class="body-2 text-subtle">Tebus dalam 7 hari, maks. nilai gadai Rp2,5 juta.</p>
+          </div>
+        </div>
+        <div class="promo">
+          <div class="promo-val"><span class="heading-3">8%</span><span class="label-1">bunga</span></div>
+          <div class="stack-8">
+            <h3 class="subtitle-1">Bunga 8% / 30 hari</h3>
+            <p class="body-2 text-subtle">Lebih leluasa — tebus dalam 30 hari.</p>
+          </div>
+        </div>
+        <div class="promo">
+          <div class="promo-val"><span class="title-1">+100rb</span><span class="label-1">pinjaman</span></div>
+          <div class="stack-8">
+            <h3 class="subtitle-1">Extra pinjaman Rp100.000</h3>
+            <p class="body-2 text-subtle">Khusus gadai elektronik: HP, laptop, dan tablet.</p>
+          </div>
+        </div>
+      </div>
+      <!-- TODO: confirm promo T&C / periode berlaku with Marketing before go-live -->
+      <p class="caption-1 text-subtle" style="margin-top:8px">*Syarat &amp; ketentuan berlaku. Promo dipilih saat booking.</p>
+    </section>
+
+    <div class="two-col">
+      <!-- ───────── CARA GADAI ───────── -->
+      <section class="section" id="cara-gadai" aria-labelledby="cara-title">
+        <div class="section-head">
+          <h2 class="title-1" id="cara-title">Cara gadai HP, 4 langkah</h2>
+          <p class="body-2 text-subtle">Mulai dari rumah, selesai di cabang.</p>
+        </div>
+        <ol class="steps" style="list-style:none">
+          <li class="step">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <h3 class="subtitle-2">Simulasi gadai online</h3>
+              <p class="body-2 text-subtle">Cari tipe HP kamu dan lihat estimasi pinjamannya.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <h3 class="subtitle-2">Booking jadwal &amp; cabang</h3>
+              <p class="body-2 text-subtle">Pilih cabang terdekat dan waktu datang — tanpa antre.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <h3 class="subtitle-2">Datang bawa HP &amp; KTP</h3>
+              <p class="body-2 text-subtle">Petugas cek kondisi HP dan kasih nilai taksiran final.</p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num">4</span>
+            <div class="step-body">
+              <h3 class="subtitle-2">Duit cair</h3>
+              <p class="body-2 text-subtle">Kurang dari 30 menit — tunai atau transfer.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ───────── HP YANG DITERIMA + SYARAT ───────── -->
+      <section class="section" aria-labelledby="hp-title">
+        <div class="section-head">
+          <h2 class="title-1" id="hp-title">HP yang bisa digadai</h2>
+          <p class="body-2 text-subtle">Android &amp; iPhone dari berbagai merek.</p>
+        </div>
+        <!-- TODO: confirm accepted brand list with Ops (source of truth = price-reference API) -->
+        <div class="chips">
+          <span class="chip">iPhone</span>
+          <span class="chip">Samsung</span>
+          <span class="chip">Oppo</span>
+          <span class="chip">Vivo</span>
+          <span class="chip">Xiaomi</span>
+          <span class="chip">Realme</span>
+          <span class="chip">Infinix</span>
+          <span class="chip">& lainnya</span>
+        </div>
+
+        <h3 class="subtitle-1" style="margin-top:24px;margin-bottom:8px">Syaratnya simpel</h3>
+        <div class="req">
+          <div class="req-item">
+            <div class="req-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+            <div class="subtitle-2">HP yang mau digadai</div>
+            <p class="caption-1 text-subtle" style="margin-top:4px">Dalam kondisi menyala.</p>
+          </div>
+          <div class="req-item">
+            <div class="req-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4M14 14h4"/></svg></div>
+            <div class="subtitle-2">KTP asli</div>
+            <p class="caption-1 text-subtle" style="margin-top:4px">Tanpa BI Checking.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ───────── KEUNGGULAN ───────── -->
+    <section class="section" aria-labelledby="why-title">
+      <div class="section-head">
+        <h2 class="title-1" id="why-title">Kenapa gadai HP di Pandai Gadai?</h2>
+      </div>
+      <div class="why">
+        <div class="why-item">
+          <img src="images/Icon-Poin-Emas.webp" alt=""/>
+          <div><h3 class="subtitle-2">Bunga 0%, bayar pakai Poin Pandai</h3><p class="body-2 text-subtle">Kumpulkan poin tiap gadai untuk potong bunga.</p></div>
+        </div>
+        <div class="why-item">
+          <img src="images/open-till-night.png" alt=""/>
+          <div><h3 class="subtitle-2">Buka malam &amp; hari libur</h3><p class="body-2 text-subtle">Terima gadai sampai 21.00 WIB.</p></div>
+        </div>
+        <div class="why-item">
+          <img src="images/ac-image.png" alt=""/>
+          <div><h3 class="subtitle-2">HP aman &amp; diasuransikan</h3><p class="body-2 text-subtle">Cabang ber-AC, CCTV 24 jam, gratis asuransi.</p></div>
+        </div>
+        <div class="why-item">
+          <img src="images/online-book.webp" alt=""/>
+          <div><h3 class="subtitle-2">Cek taksiran online</h3><p class="body-2 text-subtle">Booking &lt; 1 menit, datang tanpa antre.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── TESTIMONI ───────── -->
+    <section class="section" aria-labelledby="testi-title">
+      <div class="section-head">
+        <h2 class="title-1" id="testi-title">Kata mereka yang sudah gadai</h2>
+      </div>
+      <div class="testi-track">
+        <figure class="testi">
+          <div class="stack-8"><div class="stars" aria-label="5 bintang">★★★★★</div>
+          <blockquote class="body-2">“Tau Pandai Gadai karena direkomendasiin temen. Prosesnya cepat, simpel, dan pelayanannya ramah walaupun sudah malam. Saya cuma butuh 800 ribu, eh ternyata dapatnya 2,3 juta.”</blockquote></div>
+          <figcaption class="testi-who"><img src="images/reviewer2.png" alt=""/><div><div class="subtitle-2">Evan</div><div class="caption-1 text-subtle">Pelajar · Jakarta Pusat</div></div></figcaption>
+        </figure>
+        <figure class="testi">
+          <div class="stack-8"><div class="stars" aria-label="5 bintang">★★★★★</div>
+          <blockquote class="body-2">“Prosesnya cepat dan banyak promo. Saya dapat promo bunga 0%. Pelayanannya juga bagus, engga ribet dan petugasnya ramah. Nilai taksirannya besar, recommended.”</blockquote></div>
+          <figcaption class="testi-who"><img src="images/reviewer1.png" alt=""/><div><div class="subtitle-2">Julio</div><div class="caption-1 text-subtle">Karyawan · Jakarta Barat</div></div></figcaption>
+        </figure>
+        <figure class="testi">
+          <div class="stack-8"><div class="stars" aria-label="5 bintang">★★★★★</div>
+          <blockquote class="body-2">“Nilai taksiran lebih besar dibanding yang lain. Pegawainya ramah dan menjelaskan secara detail. Barang aman dan dijaga dengan baik.”</blockquote></div>
+          <figcaption class="testi-who"><img src="images/reviewer3.png" alt=""/><div><div class="subtitle-2">Adit</div><div class="caption-1 text-subtle">Pekerja Harian · Jakarta Utara</div></div></figcaption>
+        </figure>
+        <figure class="testi">
+          <div class="stack-8"><div class="stars" aria-label="5 bintang">★★★★★</div>
+          <blockquote class="body-2">“Prosesnya cukup 10–15 menit dan ada garansi untuk barang yang digadai. Ada keringanan cicilan dan perpanjangan kalau belum bisa tebus.”</blockquote></div>
+          <figcaption class="testi-who"><img src="images/reviewer4.png" alt=""/><div><div class="subtitle-2">Eva</div><div class="caption-1 text-subtle">Ibu Rumah Tangga · Jakarta Barat</div></div></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ───────── FAQ ───────── -->
+    <section class="section" aria-labelledby="faq-title">
+      <div class="section-head">
+        <h2 class="title-1" id="faq-title">Pertanyaan seputar gadai HP</h2>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>Berapa nilai pinjaman yang bisa saya dapat untuk HP saya?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <p class="faq-a body-2">Tergantung tipe dan kondisi HP. Cek estimasinya lewat Simulasi Gadai online — nilai final ditentukan petugas setelah HP dicek di cabang.</p>
+        </details>
+        <details>
+          <summary>Apa saja syarat gadai HP?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <p class="faq-a body-2">Cukup bawa HP yang mau digadai dan KTP asli. Tanpa BI Checking.</p>
+        </details>
+        <details>
+          <summary>Berapa lama sampai dana cair?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <p class="faq-a body-2">Kurang dari 30 menit setelah HP selesai ditaksir. Dana bisa diterima tunai atau transfer.</p>
+        </details>
+        <details>
+          <summary>Bagaimana cara cek tempat gadai HP terdekat?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <p class="faq-a body-2">Kunjungi <a href="https://pandaigadai.com/outlet" style="color:var(--text-link);font-weight:600">pandaigadai.com/outlet</a> atau cari “Pandai Gadai” di Google Maps dan pilih titik terdekat dari lokasimu.</p>
+        </details>
+        <details>
+          <summary>Kalau belum bisa tebus, apakah bisa diperpanjang?<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <!-- TODO: confirm perpanjangan wording with Ops -->
+          <p class="faq-a body-2">Bisa. Kamu bisa ajukan perpanjangan di cabang atau hubungi CS kami.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ───────── CLOSING CTA (same primary action, repeated) ───────── -->
+    <section class="section">
+      <div class="closing">
+        <img src="images/simulasi-mascot.png" alt=""/>
+        <div>
+          <h2 class="title-1">Penasaran HP kamu dihargai berapa?</h2>
+          <p class="body-2 text-subtle" style="margin-top:8px">Cek sekarang, cuma butuh 1 menit.</p>
+          <a href="simulasi-gadai.html" class="btn btn-primary btn-xl" data-cta="simulasi" data-placement="final_cta" id="button-closing-simulasi">
+            Cek Taksiran
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ───────── FOOTER ───────── -->
+<footer class="footer">
+  <div class="container">
+    <img class="footer-logo" src="images/panda.png" alt="Pandai Gadai"/>
+    <div class="footer-grid">
+      <div>
+        <p class="body-2 text-subtle">Pusat pegadaian swasta terpercaya, aman, &amp; nyaman. Yang ada Panda-nya!</p>
+        <div class="ojk"><img src="images/ojk-badge.png" alt="OJK"/><span class="caption-1 text-subtle">Berizin &amp; diawasi oleh OJK</span></div>
+      </div>
+      <div>
+        <h4>Gadai Elektronik</h4>
+        <ul>
+          <li><a href="https://pandaigadai.com/produk-kami/gadai-hp-laptop">HP &amp; Laptop</a></li>
+          <li><a href="https://pandaigadai.com/produk-kami/gadai-kamera">Kamera</a></li>
+          <li><a href="https://pandaigadai.com/produk-kami/gadai-smartwatch">Smartwatch</a></li>
+          <li><a href="https://pandaigadai.com/produk-kami/gadai-playstation">Game Console</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Perusahaan</h4>
+        <ul>
+          <li><a href="https://pandaigadai.com/tentang-kami">Tentang Kami</a></li>
+          <li><a href="https://pandaigadai.com/outlet">Cabang Kami</a></li>
+          <li><a href="https://pandaigadai.com/poin-pandai">Poin Pandai</a></li>
+          <li><a href="https://pandaigadai.com/kontak-kami">Kontak Kami</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Layanan Pengaduan</h4>
+        <ul>
+          <li>Telepon: 0857-1532-2146</li>
+          <li>Email: hello@pandaigadai.com</li>
+        </ul>
+        <h4 style="margin-top:16px">Download Aplikasi</h4>
+        <!-- TODO: add App Store / Play Store links -->
+        <div class="app-badges">
+          <a href="#" data-cta="app" aria-label="Download di App Store"><img src="images/ios-badge.png" alt="App Store"/></a>
+          <a href="#" data-cta="app" aria-label="Download di Google Play"><img src="images/playstore-badge.webp" alt="Google Play"/></a>
+        </div>
+      </div>
+    </div>
+    <p class="caption-1 text-subtle copyright">© 2026 PT Pandai Gadai Indonesia. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ───────── STICKY CTA (mobile only; appears once hero CTA scrolls away) ───────── -->
+<div class="sticky-cta" id="sticky-cta" aria-hidden="true">
+  <div class="inner">
+    <div class="meta">
+      <div class="subtitle-2">Gadai HP bunga 0%</div>
+      <div class="caption-1 text-subtle">Cek taksiran &lt; 1 menit</div>
+    </div>
+    <a href="simulasi-gadai.html" class="btn btn-primary btn-lg" data-cta="simulasi" data-placement="sticky" id="button-sticky-simulasi" tabindex="-1">Cek Taksiran</a>
+  </div>
+</div>
+
+<!-- Shared config + tracking (same file as Variant B): SIMULASI_URL, WA, GTM, lp_id / lp_variant events, UTM passthrough -->
+<script src="assets/lp-shared.js"></script>
+<script>
+  // ── Sticky CTA: show only when the hero CTA is out of view ─────────
+  (function () {
+    var hero = document.getElementById('hero-cta');
+    var bar = document.getElementById('sticky-cta');
+    var btn = document.getElementById('button-sticky-simulasi');
+    if (!('IntersectionObserver' in window) || !hero || !bar) return;
+    new IntersectionObserver(function (entries) {
+      var show = !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0;
+      bar.classList.toggle('show', show);
+      bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+      btn.tabIndex = show ? 0 : -1;
+    }).observe(hero);
+  })();
+</script>
+</body>
+</html>
