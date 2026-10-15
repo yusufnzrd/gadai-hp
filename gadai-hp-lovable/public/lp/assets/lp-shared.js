@@ -28,7 +28,7 @@
     REVIEWS: [],
     // Draft review mode: shows labelled placeholders for missing assets.
     // Set to false for production so empty video / review blocks hide themselves.
-    DRAFT_MODE: true,
+    DRAFT_MODE: false,
     LP_ID: 'hp'
   };
   window.PG_CONFIG = CONFIG;
