@@ -20,9 +20,9 @@
     APP_URL: '#',                                      // [CONFIRM]
     PRICE_API: 'https://api.pandaigadai.com/landing/v1/price-references', // [CONFIRM] approved for LP use + CORS
     // Video sources. Leave '' until the video team delivers (see brief section 4).
-    VIDEO_SRC_V1: 'https://youtu.be/h8nM4xGgr4E', VIDEO_POSTER_V1: '',             // Hero UGC 9:16
-    VIDEO_SRC_V2: 'https://youtu.be/aLUr0-W36lw', VIDEO_POSTER_V2: '',             // Process explainer 16:9 or 1:1
-    VIDEO_SRC_V3: 'https://www.youtube.com/watch?v=uI_TSc1WED4', VIDEO_POSTER_V3: '',             // Storage and care 16:9 or 1:1
+    VIDEO_SRC_V1: 'https://youtu.be/h8nM4xGgr4E', VIDEO_POSTER_V1: 'https://youtu.be/h8nM4xGgr4E',             // Hero UGC 9:16
+    VIDEO_SRC_V2: 'https://youtu.be/aLUr0-W36lw', VIDEO_POSTER_V2: 'https://youtu.be/aLUr0-W36lw',             // Process explainer 16:9 or 1:1
+    VIDEO_SRC_V3: 'https://www.youtube.com/watch?v=uI_TSc1WED4', VIDEO_POSTER_V3: 'https://www.youtube.com/watch?v=uI_TSc1WED4',             // Storage and care 16:9 or 1:1
     // Approved real Google Maps reviews only. Empty = section hidden.
     // Shape: { stars: 5, quote: '', name: 'First name', branch: 'Cabang ...' }
     REVIEWS: [],
