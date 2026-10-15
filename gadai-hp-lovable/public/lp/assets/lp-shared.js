@@ -11,10 +11,10 @@
   var CONFIG = {
     // Google Tag Manager container ID, e.g. 'GTM-ABC1234'. Loaded on every page that uses this file.
     // Leave as is to skip loading GTM (events still queue in window.dataLayer).
-    GTM_ID: 'GTM-XXXXXXX',                             // [CONFIRM]
+    GTM_ID: 'GTM-MQXLCGLX',                             // [CONFIRM]
     // Variants in the live test. Must match ACTIVE_VARIANTS in gadai-hp.html (the split page).
     ACTIVE_VARIANTS: ['a', 'b'],
-    SIMULASI_URL: 'simulasi-gadai.html',               // [CONFIRM] live simulasi URL (use the full https:// address)
+    SIMULASI_URL: 'https://pandaigadai.com/app/simulasi/gadai',               // [CONFIRM] live simulasi URL (use the full https:// address)
     WA_NUMBER: '6285715322146',                        // [CONFIRM] CS WhatsApp number for LP traffic
     BRANCH_LOCATOR_URL: 'https://pandaigadai.com/outlet', // [CONFIRM]
     APP_URL: '#',                                      // [CONFIRM]
